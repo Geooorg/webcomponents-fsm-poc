@@ -36,7 +36,7 @@ Lokal testen: `npm run preview` oder `npx serve dist`. Die Karte lädt die Kache
 | `<app-info>` | `src/components/app-info.ts` | Editierbares Textfeld oben rechts, initial leer und nur im Zustand `SendReady` sichtbar. Zeigt bei Auswahl „Ereignis: … / Form: …“, der Text darf überschrieben werden. Property `text`. |
 | `<app-cancel-button>` | `src/components/app-cancel-button.ts` | Button „Abbrechen (Esc)“, sendet `cancel-click`. Wird auch durch die Esc-Taste ausgelöst. |
 | `<app-ok-button>` | `src/components/app-ok-button.ts` | Großer OK-Button unten links, standardmäßig `disabled`; sendet `ok-click`. |
-| `<app-spinner>` | `src/components/app-spinner.ts` | Vollflächiger Overlay mit Spinner (Property `active`) in `Bootstrapping` und `Gesendet`. |
+| `<app-spinner>` | `src/components/app-spinner.ts` | Vollflächiger Overlay mit Spinner (Property `active`) in `Bootstrapping` und `Sending`. |
 
 `src/types.ts` enthält die gemeinsamen Typen (`Shape`, `Selection`) und typisiert das Event `selection-change`.
 
@@ -45,14 +45,14 @@ Lokal testen: `npm run preview` oder `npx serve dist`. Die Karte lädt die Kache
 `src/fsm.ts` steuert mit [Machina](https://machina-js.org) den Ablauf:
 
 ```
-Bootstrapping --(0,5 s)--> ShowMap --[Ereignis gewählt]--> EreignisGewaehlt --[Form gewählt]--> SendReady --[OK]--> Gesendet --(1 s)--> ShowMap
+Bootstrapping --(0,5 s)--> ShowMap --[Ereignis gewählt]--> EventSelected --[Form gewählt]--> SendReady --[OK]--> Sending --(1 s)--> ShowMap
 ```
 
 - `Bootstrapping` ist der Startzustand und simuliert die Abfrage von Hintergrunddiensten (0,5 s, Spinner).
 - Nur in `SendReady` ist der OK-Button aktiv und das Textfeld rechts sichtbar.
 - Wird die Auswahl im Menü geändert, ergibt sich der Zustand aus der Auswahl (z. B. Ereignis abgewählt → `ShowMap`).
-- Bei `Gesendet` wird der Text des Textfelds per `console.log` ausgegeben und ein Spinner angezeigt; nach 1 Sekunde geht es zurück nach `ShowMap`.
-- Abbrechen (Button oder Esc) fragt „Wirklich abbrechen?“ und führt ab `EreignisGewaehlt` zurück nach `ShowMap`. Esc wird auf `keyup` ausgewertet (siehe Kommentar in `main.ts`).
+- Bei `Sending` wird der Text des Textfelds per `console.log` ausgegeben und ein Spinner angezeigt; nach 1 Sekunde geht es zurück nach `ShowMap`.
+- Abbrechen (Button oder Esc) fragt „Wirklich abbrechen?“ und führt ab `EventSelected` zurück nach `ShowMap`. Esc wird auf `keyup` ausgewertet (siehe Kommentar in `main.ts`).
 - Beim Wechsel nach `ShowMap` werden Menü, Karte und Textfeld zurückgesetzt.
 
 ## Datenfluss

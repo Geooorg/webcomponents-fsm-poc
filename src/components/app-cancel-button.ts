@@ -4,9 +4,15 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('app-cancel-button')
 export class AppCancelButton extends LitElement {
   static styles = css`
-    :host { display: block; padding: 0 12px 12px; box-sizing: border-box; background: #f4f4f4; }
-    button { width: 100%; padding: 8px; cursor: pointer; }
-    button:disabled { cursor: not-allowed; }
+    :host { display: block; padding: 0 12px 12px; box-sizing: border-box; }
+    button {
+      width: 100%; padding: 10px 12px; font: inherit; font-weight: 500; color: var(--text);
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow); cursor: pointer; transition: background .15s, border-color .15s;
+    }
+    button:hover:not(:disabled) { border-color: var(--accent); }
+    button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    button:disabled { color: var(--muted); background: transparent; box-shadow: none; cursor: not-allowed; }
   `;
 
   @property({ type: Boolean }) disabled = true;

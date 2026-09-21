@@ -5,9 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Web Components Karte</title>
     <style>
-      html, body { height: 100%; margin: 0; font-family: system-ui, sans-serif; }
+      :root {
+        --bg: #eef1f6; --surface: #fff; --border: #d5dbe5; --text: #1e293b; --muted: #94a3b8;
+        --accent: #2563eb; --accent-hover: #1d4ed8;
+        --radius: 12px; --shadow: 0 1px 2px rgba(15, 23, 42, .08), 0 2px 8px rgba(15, 23, 42, .04);
+      }
+      html, body { height: 100%; margin: 0; font-family: system-ui, sans-serif; color: var(--text); background: var(--bg); }
       main { display: flex; height: 100%; }
-      .column { display: flex; flex-direction: column; background: #f4f4f4; }
+      .column { display: flex; flex-direction: column; }
       .column.left { flex: 0 0 200px; }
       .column.right { flex: 0 0 220px; }
       .column.left app-ok-button { margin-top: auto; }
@@ -22,6 +27,7 @@
       <div class="column left">
         <app-menu></app-menu>
         <app-cancel-button></app-cancel-button>
+        <app-status></app-status>
         <app-ok-button></app-ok-button>
       </div>
       <app-map></app-map>

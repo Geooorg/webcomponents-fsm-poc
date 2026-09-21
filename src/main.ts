@@ -4,6 +4,7 @@ import './components/app-info';
 import './components/app-ok-button';
 import './components/app-cancel-button';
 import './components/app-edit-button';
+import './components/app-status';
 import './components/app-spinner';
 import { createSelectionFsm } from './fsm';
 import type { Selection } from './types';
@@ -17,6 +18,7 @@ const info = $('app-info');
 const okButton = $('app-ok-button');
 const cancelButton = $('app-cancel-button');
 const editButton = $('app-edit-button');
+const status = $('app-status');
 const spinner = $('app-spinner');
 
 const fsm = createSelectionFsm();
@@ -34,8 +36,8 @@ menu.addEventListener('selection-change', (e) => {
 
 okButton.addEventListener('ok-click', () => fsm.handle('send'));
 
-// Abbrechen per Button oder Esc, immer mit Rückfrage. Nur ab EreignisGewaehlt möglich.
-const cancelable = () => ['EreignisGewaehlt', 'SendReady', 'Gesendet'].includes(fsm.currentState());
+// Abbrechen per Button oder Esc, immer mit Rückfrage. Nur ab EventSelected möglich.
+const cancelable = () => ['EventSelected', 'SendReady', 'Sending'].includes(fsm.currentState());
 
 function requestCancel() {
   if (cancelable() && confirm('Wirklich abbrechen?')) fsm.handle('cancel');
@@ -59,7 +61,8 @@ editButton.addEventListener('edit-click', () => {
 // FSM -> UI
 function render(state: string) {
   if (state !== 'SendReady') infoOpen = false;
-  spinner.active = state === 'Bootstrapping' || state === 'Gesendet';
+  status.value = state;
+  spinner.active = state === 'Bootstrapping' || state === 'Sending';
   okButton.disabled = state !== 'SendReady';
   cancelButton.disabled = !cancelable();
   info.hidden = !infoOpen;
@@ -71,7 +74,7 @@ render(fsm.currentState());
 fsm.on('transitioned', ({ toState }) => {
   render(toState);
 
-  if (toState === 'Gesendet') console.log(info.text);
+  if (toState === 'Sending') console.log(info.text);
 
   if (toState === 'ShowMap') {
     menu.reset();

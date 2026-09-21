@@ -12,7 +12,7 @@ export class AppMap extends LitElement {
     unsafeCSS(leafletCss),
     css`
       :host { display: block; }
-      #map { width: 100%; height: 100%; }
+      #map { width: 100%; height: 100%; border-radius: var(--radius); box-shadow: var(--shadow); }
     `,
   ];
 

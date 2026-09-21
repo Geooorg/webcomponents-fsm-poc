@@ -4,9 +4,15 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('app-ok-button')
 export class AppOkButton extends LitElement {
   static styles = css`
-    :host { display: block; padding: 12px; box-sizing: border-box; background: #f4f4f4; }
-    button { width: 100%; padding: 20px; font-size: 1.5rem; font-weight: bold; cursor: pointer; }
-    button:disabled { cursor: not-allowed; }
+    :host { display: block; padding: 12px; box-sizing: border-box; }
+    button {
+      width: 100%; padding: 22px 20px; font: inherit; font-size: 1.5rem; font-weight: bold; color: #fff;
+      background: var(--accent); border: none; border-radius: var(--radius);
+      box-shadow: var(--shadow); cursor: pointer; transition: background .15s;
+    }
+    button:hover:not(:disabled) { background: var(--accent-hover); }
+    button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    button:disabled { color: var(--muted); background: var(--border); box-shadow: none; cursor: not-allowed; }
   `;
 
   @property({ type: Boolean }) disabled = true;

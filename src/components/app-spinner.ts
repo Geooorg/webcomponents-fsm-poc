@@ -5,7 +5,7 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('app-spinner')
 export class AppSpinner extends LitElement {
   static styles = css`
-    :host { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(255, 255, 255, 0.6); }
+    :host { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(2px); }
     :host([active]) { display: flex; align-items: center; justify-content: center; }
     .spinner {
       width: 56px; height: 56px; box-sizing: border-box;

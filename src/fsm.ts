@@ -1,7 +1,7 @@
 import { createFsm } from 'machina';
 import type { Selection } from './types';
 
-export type FsmState = 'Bootstrapping' | 'ShowMap' | 'EreignisGewaehlt' | 'SendReady' | 'Gesendet';
+export type FsmState = 'Bootstrapping' | 'ShowMap' | 'EventSelected' | 'SendReady' | 'Sending';
 
 const BOOTSTRAP_DELAY_MS = 500;
 const RESET_DELAY_MS = 1000;
@@ -9,7 +9,7 @@ const RESET_DELAY_MS = 1000;
 // Der Zustand ergibt sich aus der aktuellen Auswahl; bleibt er gleich, wird nicht transitioniert.
 function stateFor({ event, shape }: Selection): FsmState {
   if (!event) return 'ShowMap';
-  return shape ? 'SendReady' : 'EreignisGewaehlt';
+  return shape ? 'SendReady' : 'EventSelected';
 }
 
 const onSelectionChanged = (current: FsmState) => (_args: unknown, selection: unknown) => {
@@ -38,16 +38,16 @@ export function createSelectionFsm() {
       ShowMap: {
         selectionChanged: onSelectionChanged('ShowMap'),
       },
-      EreignisGewaehlt: {
-        selectionChanged: onSelectionChanged('EreignisGewaehlt'),
+      EventSelected: {
+        selectionChanged: onSelectionChanged('EventSelected'),
         cancel: 'ShowMap',
       },
       SendReady: {
         selectionChanged: onSelectionChanged('SendReady'),
-        send: 'Gesendet',
+        send: 'Sending',
         cancel: 'ShowMap',
       },
-      Gesendet: {
+      Sending: {
         _onEnter() {
           timer = setTimeout(() => fsm.handle('sendDone'), RESET_DELAY_MS);
         },
