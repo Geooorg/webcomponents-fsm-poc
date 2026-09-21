@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "leaflet": "^1.9.4",
-    "lit": "^3.3.3"
+    "lit": "^3.3.3",
+    "machina": "^4.0.2"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.22",

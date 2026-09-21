@@ -33,4 +33,4 @@ Die Komponenten kennen sich nicht gegenseitig. `src/main.ts` verbindet sie: Even
 
 ## Lit
 
-Die Komponenten sind mit [Lit](https://lit.dev) gebaut (`LitElement`, Decorators `@customElement`, `@property`, `@state`). Lit liefert deklaratives Rendering mit `html`-Templates, reaktive Properties und gescopte Styles über `css`. `app-map` bleibt wegen Leaflet teils imperativ (Karte wird in `firstUpdated` erzeugt). Die Decorators benötigen `experimentalDecorators` in der `tsconfig.json`.
+&(https://lit.dev) gebaut (`LitElement`, Decorators `@customElement`, `@property`, `@state`). Lit liefert deklaratives Rendering mit `html`-Templates, reaktive Properties und gescopte Styles über `css`. `app-map` bleibt wegen Leaflet teils imperativ (Karte wird in `firstUpdated` erzeugt). Die Decorators benötigen `experimentalDecorators` in der `tsconfig.json`.
