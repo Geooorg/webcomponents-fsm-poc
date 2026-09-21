@@ -33,10 +33,10 @@ Lokal testen: `npm run preview` oder `npx serve dist`. Die Karte lädt die Kache
 |---|---|---|
 | `<app-menu>` | `src/components/app-menu.ts` | Drei Ereignis-Buttons (Toggle) und Form-Auswahl per Radio-Buttons (Rechteck, Kreis, Polygon). Beides ist abwählbar: erneuter Klick hebt die Auswahl auf. Sendet bei jeder Änderung das Event `selection-change`. |
 | `<app-map>` | `src/components/app-map.ts` | Zeigt eine Leaflet-Karte (OpenStreetMap, Berlin). Die Property `shape` steuert, welche Form eingezeichnet wird; `null` entfernt sie. Das Leaflet-CSS wird ins Shadow DOM eingebettet. |
-| `<app-info>` | `src/components/app-info.ts` | Schreibgeschütztes Textfeld mit dem aktuellen Ereignis und der Form. Properties `event` und `shape`. |
+| `<app-info>` | `src/components/app-info.ts` | Editierbares Textfeld oben rechts, initial leer. Zeigt bei Auswahl „Ereignis: … / Form: …“, der Text darf überschrieben werden. Property `text`. |
 | `<app-cancel-button>` | `src/components/app-cancel-button.ts` | Button „Abbrechen (Esc)“, sendet `cancel-click`. Wird auch durch die Esc-Taste ausgelöst. |
 | `<app-ok-button>` | `src/components/app-ok-button.ts` | Großer OK-Button unten links, standardmäßig `disabled`; sendet `ok-click`. |
-| `<app-freetext>` | `src/components/app-freetext.ts` | Freitext-Feld unten rechts. Übernimmt bei Auswahl eines Ereignisses dessen Buttontext (z. B. „Ereignis 1“) und bleibt editierbar. |
+| `<app-spinner>` | `src/components/app-spinner.ts` | Vollflächiger Overlay mit Spinner (Property `active`), während „gesendet“ wird. |
 
 `src/types.ts` enthält die gemeinsamen Typen (`Shape`, `Selection`) und typisiert das Event `selection-change`.
 
@@ -50,9 +50,9 @@ Init --[Ereignis gewählt]--> EreignisGewaehlt --[Form gewählt]--> SendReady --
 
 - Nur in `SendReady` ist der OK-Button aktiv.
 - Wird die Auswahl im Menü geändert, ergibt sich der Zustand aus der Auswahl (z. B. Ereignis abgewählt → `Init`).
-- Bei `Gesendet` wird der Freitext per `console.log` ausgegeben; nach 1 Sekunde geht es zurück nach `Init`.
+- Bei `Gesendet` wird der Text des Textfelds per `console.log` ausgegeben und ein Spinner angezeigt; nach 1 Sekunde geht es zurück nach `Init`.
 - Abbrechen (Button oder Esc) fragt „Wirklich abbrechen?“ und führt aus jedem Zustand zurück nach `Init`.
-- Beim Wechsel nach `Init` werden Menü, Karte, Info und Freitext zurückgesetzt.
+- Beim Wechsel nach `Init` werden Menü, Karte und Textfeld zurückgesetzt.
 
 ## Datenfluss
 

@@ -1,6 +1,5 @@
 import { LitElement, html, css } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import type { Shape } from '../types';
 
 @customElement('app-info')
 export class AppInfo extends LitElement {
@@ -9,12 +8,14 @@ export class AppInfo extends LitElement {
     textarea { width: 100%; height: 100%; min-height: 120px; box-sizing: border-box; resize: none; }
   `;
 
-  @property() event: string | null = null;
-  @property() shape: Shape | null = null;
+  @property() text = '';
 
   render() {
-    const text = `Ereignis: ${this.event ?? 'keines gewählt'}\nForm: ${this.shape ?? 'keine gewählt'}`;
-    return html`<textarea readonly .value=${text}></textarea>`;
+    return html`<textarea .value=${this.text} @input=${this.onInput}></textarea>`;
+  }
+
+  private onInput(e: Event) {
+    this.text = (e.target as HTMLTextAreaElement).value;
   }
 }
 

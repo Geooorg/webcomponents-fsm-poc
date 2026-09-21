@@ -3,8 +3,9 @@ import './components/app-map';
 import './components/app-info';
 import './components/app-ok-button';
 import './components/app-cancel-button';
-import './components/app-freetext';
+import './components/app-spinner';
 import { createSelectionFsm } from './fsm';
+import type { Selection } from './types';
 
 const $ = <T extends keyof HTMLElementTagNameMap>(tag: T) =>
   document.querySelector<HTMLElementTagNameMap[T]>(tag)!;
@@ -14,17 +15,18 @@ const map = $('app-map');
 const info = $('app-info');
 const okButton = $('app-ok-button');
 const cancelButton = $('app-cancel-button');
-const freetext = $('app-freetext');
+const spinner = $('app-spinner');
 
 const fsm = createSelectionFsm();
+
+const describe = ({ event, shape }: Selection) =>
+  event || shape ? `Ereignis: ${event ?? 'keines gewählt'}\nForm: ${shape ?? 'keine gewählt'}` : '';
 
 // UI -> FSM
 menu.addEventListener('selection-change', (e) => {
   const selection = e.detail;
-  info.event = selection.event;
-  info.shape = selection.shape;
   map.shape = selection.shape;
-  if (selection.event) freetext.text = selection.event;
+  info.text = describe(selection);
   fsm.handle('selectionChanged', selection);
 });
 
@@ -44,13 +46,12 @@ fsm.on('transitioned', ({ toState }) => {
   okButton.disabled = toState !== 'SendReady';
   cancelButton.disabled = toState === 'Init';
 
-  if (toState === 'Gesendet') console.log(freetext.text);
+  spinner.active = toState === 'Gesendet';
+  if (toState === 'Gesendet') console.log(info.text);
 
   if (toState === 'Init') {
     menu.reset();
-    info.event = null;
-    info.shape = null;
     map.shape = null;
-    freetext.text = '';
+    info.text = '';
   }
 });

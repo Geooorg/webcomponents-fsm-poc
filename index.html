@@ -7,10 +7,11 @@
     <style>
       html, body { height: 100%; margin: 0; font-family: system-ui, sans-serif; }
       main { display: flex; height: 100%; }
-      .column { display: flex; flex-direction: column; }
+      .column { display: flex; flex-direction: column; background: #f4f4f4; }
       .column.left { flex: 0 0 200px; }
       .column.right { flex: 0 0 220px; }
-      .column > :first-child { flex: 1; }
+      .column.left app-ok-button { margin-top: auto; }
+      .column.right app-info { flex: 1; }
       app-map { flex: 1; }
     </style>
   </head>
@@ -24,9 +25,9 @@
       <app-map></app-map>
       <div class="column right">
         <app-info></app-info>
-        <app-freetext></app-freetext>
       </div>
     </main>
+    <app-spinner></app-spinner>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
