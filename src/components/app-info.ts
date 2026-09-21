@@ -1,7 +1,9 @@
-class AppInfo extends HTMLElement {
-  #event = null;
-  #shape = null;
-  #output;
+import type { Shape } from '../types';
+
+export class AppInfo extends HTMLElement {
+  #event: string | null = null;
+  #shape: Shape | null = null;
+  #output!: HTMLTextAreaElement;
 
   connectedCallback() {
     const root = this.attachShadow({ mode: 'open' });
@@ -12,12 +14,12 @@ class AppInfo extends HTMLElement {
       </style>
       <textarea readonly></textarea>
     `;
-    this.#output = root.querySelector('textarea');
+    this.#output = root.querySelector('textarea')!;
     this.#render();
   }
 
-  set event(value) { this.#event = value; this.#render(); }
-  set shape(value) { this.#shape = value; this.#render(); }
+  set event(value: string | null) { this.#event = value; this.#render(); }
+  set shape(value: Shape | null) { this.#shape = value; this.#render(); }
 
   #render() {
     if (!this.#output) return;
@@ -27,3 +29,9 @@ class AppInfo extends HTMLElement {
 }
 
 customElements.define('app-info', AppInfo);
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'app-info': AppInfo;
+  }
+}

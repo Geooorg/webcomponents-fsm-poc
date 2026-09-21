@@ -1,9 +1,11 @@
-const EVENTS = ['Ereignis 1', 'Ereignis 2', 'Ereignis 3'];
-const SHAPES = ['Rechteck', 'Kreis', 'Polygon'];
+import type { Shape } from '../types';
 
-class AppMenu extends HTMLElement {
-  #event = null;
-  #shape = null;
+const EVENTS = ['Ereignis 1', 'Ereignis 2', 'Ereignis 3'];
+const SHAPES: Shape[] = ['Rechteck', 'Kreis', 'Polygon'];
+
+export class AppMenu extends HTMLElement {
+  #event: string | null = null;
+  #shape: Shape | null = null;
 
   connectedCallback() {
     const root = this.attachShadow({ mode: 'open' });
@@ -22,22 +24,22 @@ class AppMenu extends HTMLElement {
       </fieldset>
     `;
 
-    root.querySelectorAll('button').forEach((btn) =>
+    root.querySelectorAll<HTMLButtonElement>('button').forEach((btn) =>
       btn.addEventListener('click', () => {
-        this.#event = this.#event === btn.dataset.event ? null : btn.dataset.event;
-        root.querySelectorAll('button').forEach((b) =>
+        this.#event = this.#event === btn.dataset.event ? null : btn.dataset.event!;
+        root.querySelectorAll<HTMLButtonElement>('button').forEach((b) =>
           b.setAttribute('aria-pressed', String(b.dataset.event === this.#event)));
         this.#emit();
       }));
 
     // Radio-Buttons lassen sich nativ nicht abwählen: erneuter Klick auf die gewählte Form hebt sie auf.
-    root.querySelectorAll('input[type="radio"]').forEach((radio) =>
+    root.querySelectorAll<HTMLInputElement>('input[type="radio"]').forEach((radio) =>
       radio.addEventListener('click', () => {
         if (this.#shape === radio.value) {
           radio.checked = false;
           this.#shape = null;
         } else {
-          this.#shape = radio.value;
+          this.#shape = radio.value as Shape;
         }
         this.#emit();
       }));
@@ -51,3 +53,9 @@ class AppMenu extends HTMLElement {
 }
 
 customElements.define('app-menu', AppMenu);
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'app-menu': AppMenu;
+  }
+}
