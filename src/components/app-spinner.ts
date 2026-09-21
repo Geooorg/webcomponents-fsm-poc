@@ -18,7 +18,7 @@ export class AppSpinner extends LitElement {
   @property({ type: Boolean, reflect: true }) active = false;
 
   render() {
-    return html`<div class="spinner" role="status" aria-label="Wird gesendet"></div>`;
+    return html`<div class="spinner" role="status" aria-label="Bitte warten"></div>`;
   }
 }
 

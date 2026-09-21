@@ -32,24 +32,36 @@ menu.addEventListener('selection-change', (e) => {
 
 okButton.addEventListener('ok-click', () => fsm.handle('send'));
 
-// Abbrechen per Button oder Esc, immer mit Rückfrage.
+// Abbrechen per Button oder Esc, immer mit Rückfrage. Nur ab EreignisGewaehlt möglich.
+const cancelable = () => ['EreignisGewaehlt', 'SendReady', 'Gesendet'].includes(fsm.currentState());
+
 function requestCancel() {
-  if (fsm.currentState() !== 'Init' && confirm('Wirklich abbrechen?')) fsm.handle('cancel');
+  if (cancelable() && confirm('Wirklich abbrechen?')) fsm.handle('cancel');
 }
 cancelButton.addEventListener('cancel-click', requestCancel);
-document.addEventListener('keydown', (e) => {
+
+// Bewusst keyup statt keydown: Öffnet man confirm() beim keydown von Esc, schließt das
+// anschließende keyup (bzw. Auto-Repeat) den Dialog sofort wieder als „Abbrechen“.
+document.addEventListener('keyup', (e) => {
   if (e.key === 'Escape') requestCancel();
 });
 
 // FSM -> UI
-fsm.on('transitioned', ({ toState }) => {
-  okButton.disabled = toState !== 'SendReady';
-  cancelButton.disabled = toState === 'Init';
+function render(state: string) {
+  spinner.active = state === 'Bootstrapping' || state === 'Gesendet';
+  okButton.disabled = state !== 'SendReady';
+  cancelButton.disabled = !cancelable();
+  info.hidden = state !== 'SendReady';
+}
 
-  spinner.active = toState === 'Gesendet';
+render(fsm.currentState());
+
+fsm.on('transitioned', ({ toState }) => {
+  render(toState);
+
   if (toState === 'Gesendet') console.log(info.text);
 
-  if (toState === 'Init') {
+  if (toState === 'ShowMap') {
     menu.reset();
     map.shape = null;
     info.text = '';
