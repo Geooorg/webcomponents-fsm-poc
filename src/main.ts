@@ -3,6 +3,7 @@ import './components/app-map';
 import './components/app-info';
 import './components/app-ok-button';
 import './components/app-cancel-button';
+import './components/app-edit-button';
 import './components/app-spinner';
 import { createSelectionFsm } from './fsm';
 import type { Selection } from './types';
@@ -15,6 +16,7 @@ const map = $('app-map');
 const info = $('app-info');
 const okButton = $('app-ok-button');
 const cancelButton = $('app-cancel-button');
+const editButton = $('app-edit-button');
 const spinner = $('app-spinner');
 
 const fsm = createSelectionFsm();
@@ -46,12 +48,22 @@ document.addEventListener('keyup', (e) => {
   if (e.key === 'Escape') requestCancel();
 });
 
+// Bearbeiten blendet den Textkasten ein/aus. Er ist nur in SendReady möglich und startet dort ausgeblendet.
+let infoOpen = false;
+
+editButton.addEventListener('edit-click', () => {
+  infoOpen = !infoOpen;
+  info.hidden = !infoOpen;
+});
+
 // FSM -> UI
 function render(state: string) {
+  if (state !== 'SendReady') infoOpen = false;
   spinner.active = state === 'Bootstrapping' || state === 'Gesendet';
   okButton.disabled = state !== 'SendReady';
   cancelButton.disabled = !cancelable();
-  info.hidden = state !== 'SendReady';
+  info.hidden = !infoOpen;
+  editButton.hidden = state !== 'SendReady';
 }
 
 render(fsm.currentState());

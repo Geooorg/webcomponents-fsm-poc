@@ -12,6 +12,7 @@
       .column.right { flex: 0 0 220px; }
       .column.left app-ok-button { margin-top: auto; }
       .column.right app-info { flex: 1; }
+      .column.right app-edit-button { margin-top: auto; }
       /* Unten endet die Karte auf Höhe der Oberkante des OK-Buttons: 12px Padding + 72px Buttonhöhe. */
       app-map { flex: 1; margin: 12px 12px 84px; }
     </style>
@@ -26,6 +27,7 @@
       <app-map></app-map>
       <div class="column right">
         <app-info></app-info>
+        <app-edit-button></app-edit-button>
       </div>
     </main>
     <app-spinner></app-spinner>
