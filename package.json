@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "package": "npm run build && mkdir -p release && tar -czf release/webcomponents-karte.tar.gz -C dist ."
   },
   "dependencies": {
     "leaflet": "^1.9.4",

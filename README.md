@@ -10,6 +10,23 @@ npm run dev      # Dev-Server
 npm run build    # Typecheck (tsc) + Produktions-Build
 ```
 
+## Build und Deployment
+
+```bash
+npm run build      # Typecheck + minifizierter Build nach dist/
+npm run package    # Build + Archiv release/webcomponents-karte.tar.gz
+```
+
+Der Build ist eine reine statische Seite (`index.html` + `assets/`) ohne Server-Code. `vite.config.ts` setzt `base: './'`, alle Pfade sind also relativ. Die Seite läuft deshalb im Wurzelverzeichnis wie in einem Unterverzeichnis eines beliebigen HTML-Servers (nginx, Apache, S3 usw.).
+
+Deployment:
+
+1. `npm run package` ausführen.
+2. Archiv auf den Server kopieren und in das Zielverzeichnis entpacken, z. B. `tar -xzf webcomponents-karte.tar.gz -C /var/www/html/karte`. Alternativ den Inhalt von `dist/` direkt hochladen.
+3. Optional: auf dem Server gzip/brotli für `.js`/`.css` aktivieren.
+
+Lokal testen: `npm run preview` oder `npx serve dist`. Die Karte lädt die Kacheln von `tile.openstreetmap.org`, der Client braucht also Internetzugang.
+
 ## Komponenten
 
 | Element | Datei | Aufgabe |
