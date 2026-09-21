@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import type { Shape } from '../types';
 
 const EVENTS = ['Ereignis 1', 'Ereignis 2', 'Ereignis 3'];
@@ -24,8 +24,12 @@ export class AppMenu extends LitElement {
     }
     legend { padding: 0 6px; color: var(--muted); font-size: .85rem; }
     label { display: block; padding: 4px 0; cursor: pointer; }
+    label:has(input:disabled) { color: var(--muted); cursor: not-allowed; }
     input[type="radio"] { accent-color: var(--accent); }
   `;
+
+  /** Formen sind erst wählbar, wenn ein Ereignis gewählt ist. */
+  @property({ type: Boolean }) shapesDisabled = false;
 
   @state() private event: string | null = null;
   @state() private shape: Shape | null = null;
@@ -40,7 +44,7 @@ export class AppMenu extends LitElement {
         <legend>Form</legend>
         ${SHAPES.map((name) => html`
           <label>
-            <input type="radio" name="shape" .checked=${this.shape === name} @click=${() => this.toggleShape(name)}>
+            <input type="radio" name="shape" ?disabled=${this.shapesDisabled} .checked=${this.shape === name} @click=${() => this.toggleShape(name)}>
             ${name}
           </label>`)}
       </fieldset>
@@ -55,6 +59,7 @@ export class AppMenu extends LitElement {
 
   private toggleEvent(name: string) {
     this.event = this.event === name ? null : name;
+    if (!this.event) this.shape = null; // ohne Ereignis keine Form
     this.emit();
   }
 

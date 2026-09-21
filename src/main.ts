@@ -63,6 +63,7 @@ function render(state: string) {
   if (state !== 'SendReady') infoOpen = false;
   status.value = state;
   spinner.active = state === 'Bootstrapping' || state === 'Sending';
+  menu.shapesDisabled = state !== 'EventSelected' && state !== 'SendReady';
   okButton.disabled = state !== 'SendReady';
   cancelButton.disabled = !cancelable();
   info.hidden = !infoOpen;
