@@ -4,7 +4,7 @@ import L from 'leaflet';
 import leafletCss from 'leaflet/dist/leaflet.css?inline';
 import type { Shape } from '../types';
 
-const CENTER: L.LatLngTuple = [52.52, 13.405];
+const CENTER: L.LatLngTuple = [53.5511, 9.9937];
 
 @customElement('app-map')
 export class AppMap extends LitElement {
