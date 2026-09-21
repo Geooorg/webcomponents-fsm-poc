@@ -8,9 +8,11 @@
   <component name="ComposerSettings">
     <execution />
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_25" default="true" project-jdk-name="temurin-25" project-jdk-type="JavaSDK" />
   <component name="SuppressionsComponent">
     <option name="suppComments" value="[]" />
   </component>

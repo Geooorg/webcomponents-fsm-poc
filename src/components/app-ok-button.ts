@@ -12,7 +12,11 @@ export class AppOkButton extends LitElement {
   @property({ type: Boolean }) disabled = true;
 
   render() {
-    return html`<button type="button" ?disabled=${this.disabled}>OK</button>`;
+    return html`<button type="button" ?disabled=${this.disabled} @click=${this.onClick}>OK</button>`;
+  }
+
+  private onClick() {
+    this.dispatchEvent(new CustomEvent('ok-click'));
   }
 }
 

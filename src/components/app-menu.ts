@@ -35,6 +35,12 @@ export class AppMenu extends LitElement {
     `;
   }
 
+  /** Setzt die Auswahl zurück, ohne ein Event zu senden. */
+  reset() {
+    this.event = null;
+    this.shape = null;
+  }
+
   private toggleEvent(name: string) {
     this.event = this.event === name ? null : name;
     this.emit();
